@@ -309,5 +309,7 @@ public class BlockInit
     public static final DeferredHolder<Block, Block> PATINA_GOLD_BLOCK = BLOCKS.registerBlock("patina_gold_block", Block::new, BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_BLOCK));
     public static final DeferredHolder<Block, Block> PATINA_AURUM_BLOCK = BLOCKS.registerBlock("patina_aurum_block", Block::new, BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_BLOCK));
 
+    public static final DeferredHolder<Block, Block> BLUE_ICE_BRICKS = BLOCKS.registerBlock("blue_ice_bricks", Block::new, BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_ICE));
+
     public static final TreeGrower SHADE_TREE_GROWER = new TreeGrower("shade_tree", Optional.empty(), Optional.of(FeatureInit.CONFIGURED_SHADE_TREE), Optional.empty());
 }

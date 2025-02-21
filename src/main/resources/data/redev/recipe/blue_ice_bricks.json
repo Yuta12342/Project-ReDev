@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "bricks",
+  "pattern":
+  [
+    "BB",
+    "BB"
+  ],
+  "key":
+  {
+    "B": "minecraft:blue_ice"
+  },
+  "result":
+  {
+    "id": "redev:blue_ice_bricks",
+    "count":  4
+  }
+}

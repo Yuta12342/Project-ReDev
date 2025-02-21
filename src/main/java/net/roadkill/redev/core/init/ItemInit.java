@@ -329,6 +329,8 @@ public class ItemInit
     public static final DeferredHolder<Item, BlockItem> PATINA_GOLD_BLOCK = ITEMS.registerSimpleBlockItem("patina_gold_block", BlockInit.PATINA_GOLD_BLOCK);
     public static final DeferredHolder<Item, BlockItem> PATINA_AURUM_BLOCK = ITEMS.registerSimpleBlockItem("patina_aurum_block", BlockInit.PATINA_AURUM_BLOCK);
 
+    public static final DeferredHolder<Item, BlockItem> BLUE_ICE_BRICKS = ITEMS.registerSimpleBlockItem("blue_ice_bricks", BlockInit.BLUE_ICE_BRICKS);
+
     public static final DeferredHolder<Item, BlockItem> BASALT_SLAB = ITEMS.registerSimpleBlockItem("basalt_slab", BlockInit.BASALT_SLAB);
     public static final DeferredHolder<Item, BlockItem> SMOOTH_BASALT_SLAB = ITEMS.registerSimpleBlockItem("smooth_basalt_slab", BlockInit.SMOOTH_BASALT_SLAB);
     public static final DeferredHolder<Item, BlockItem> POLISHED_BASALT_SLAB = ITEMS.registerSimpleBlockItem("polished_basalt_slab", BlockInit.POLISHED_BASALT_SLAB);
@@ -349,3 +351,4 @@ public class ItemInit
     {   return ITEMS.registerItem(name, properties -> item.apply(block.get(), properties.setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ReDev.MOD_ID, name))).useBlockDescriptionPrefix()));
     }
 }
+ 
