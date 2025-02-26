@@ -26,6 +26,7 @@ public class BlockInit
     private static final Supplier<BlockBehaviour.Properties> WHISPUR_PROPERTIES = () -> BlockBehaviour.Properties.of().strength(2.0F, 3.0F).sound(SoundType.NETHER_WOOD).instrument(NoteBlockInstrument.BASS).mapColor(MapColor.SAND);
     private static final Supplier<BlockBehaviour.Properties> PETRIFIED_PROPERTIES = () -> BlockBehaviour.Properties.of().strength(3.0F, 8.0F).sound(ModSoundType.PETRIFIED_PLANKS).instrument(NoteBlockInstrument.BASS).mapColor(MapColor.TERRACOTTA_PURPLE);
     private static final Supplier<BlockBehaviour.Properties> SHADE_PROPERTIES = () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).mapColor(MapColor.TERRACOTTA_ORANGE);
+    private static final Supplier<BlockBehaviour.Properties> DOOR_PROPERTIES = () -> BlockBehaviour.Properties.of().noOcclusion();
 
     public static final DeferredHolder<Block, Block> SCRAPWOOD_PLANKS = BLOCKS.registerBlock("scrapwood_planks", Block::new, SCRAPWOOD_PROPERTIES.get());
     public static final DeferredHolder<Block, Block> WHISPUR_PLANKS = BLOCKS.registerBlock("whispur_planks", Block::new, WHISPUR_PROPERTIES.get());
@@ -65,10 +66,10 @@ public class BlockInit
     public static final DeferredHolder<Block, FenceGateBlock> PETRIFIED_FENCE_GATE = BLOCKS.registerBlock("petrified_fence_gate", props -> new FenceGateBlock(WoodType.OAK, props), PETRIFIED_PROPERTIES.get().forceSolidOn());
     public static final DeferredHolder<Block, FenceGateBlock> SHADE_FENCE_GATE = BLOCKS.registerBlock("shade_fence_gate", props -> new FenceGateBlock(WoodType.OAK, props), SHADE_PROPERTIES.get().forceSolidOn());
 
-    public static final DeferredHolder<Block, DoorBlock> SCRAPWOOD_DOOR = BLOCKS.registerBlock("scrapwood_door", props -> new DoorBlock(ModBlocks.BlockSets.SCRAPWOOD, props), SCRAPWOOD_PROPERTIES.get());
-    public static final DeferredHolder<Block, DoorBlock> WHISPUR_DOOR = BLOCKS.registerBlock("whispur_door", props -> new DoorBlock(ModBlocks.BlockSets.WHISPUR, props), WHISPUR_PROPERTIES.get());
-    public static final DeferredHolder<Block, DoorBlock> PETRIFIED_DOOR = BLOCKS.registerBlock("petrified_door", props -> new DoorBlock(ModBlocks.BlockSets.PETRIFIED, props), PETRIFIED_PROPERTIES.get());
-    public static final DeferredHolder<Block, DoorBlock> SHADE_DOOR = BLOCKS.registerBlock("shade_door", props -> new DoorBlock(ModBlocks.BlockSets.SHADE, props), SHADE_PROPERTIES.get());
+    public static final DeferredHolder<Block, DoorBlock> SCRAPWOOD_DOOR = BLOCKS.registerBlock("scrapwood_door", props -> new DoorBlock(ModBlocks.BlockSets.SCRAPWOOD, props), SCRAPWOOD_PROPERTIES.get().noOcclusion());
+    public static final DeferredHolder<Block, DoorBlock> WHISPUR_DOOR = BLOCKS.registerBlock("whispur_door", props -> new DoorBlock(ModBlocks.BlockSets.WHISPUR, props), WHISPUR_PROPERTIES.get().noOcclusion());
+    public static final DeferredHolder<Block, DoorBlock> PETRIFIED_DOOR = BLOCKS.registerBlock("petrified_door", props -> new DoorBlock(ModBlocks.BlockSets.PETRIFIED, props), PETRIFIED_PROPERTIES.get().noOcclusion());
+    public static final DeferredHolder<Block, DoorBlock> SHADE_DOOR = BLOCKS.registerBlock("shade_door", props -> new DoorBlock(ModBlocks.BlockSets.SHADE, props), SHADE_PROPERTIES.get().noOcclusion());
 
     public static final DeferredHolder<Block, TrapDoorBlock> SCRAPWOOD_TRAPDOOR = BLOCKS.registerBlock("scrapwood_trapdoor", props -> new TrapDoorBlock(ModBlocks.BlockSets.SCRAPWOOD, props), SCRAPWOOD_PROPERTIES.get().noOcclusion());
     public static final DeferredHolder<Block, TrapDoorBlock> WHISPUR_TRAPDOOR = BLOCKS.registerBlock("whispur_trapdoor", props -> new TrapDoorBlock(ModBlocks.BlockSets.WHISPUR, props), WHISPUR_PROPERTIES.get().noOcclusion());
@@ -312,4 +313,14 @@ public class BlockInit
     public static final DeferredHolder<Block, Block> BLUE_ICE_BRICKS = BLOCKS.registerBlock("blue_ice_bricks", Block::new, BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_ICE));
 
     public static final TreeGrower SHADE_TREE_GROWER = new TreeGrower("shade_tree", Optional.empty(), Optional.of(FeatureInit.CONFIGURED_SHADE_TREE), Optional.empty());
+
+    public static <T> T useSuppliers(Supplier<T>[] Suppliers) {
+        T[] result = (T[]) new Object[Suppliers.length];
+        for (int i = 0; i < Suppliers.length; i++) {
+            result[i] = Suppliers[i].get();
+        }
+
+
+        return (T) result; 
+    }
 }

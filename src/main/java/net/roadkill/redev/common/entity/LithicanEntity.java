@@ -36,9 +36,11 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.ai.goal.ZombieAttackGoal;
 import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -77,6 +79,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.rmi.server.Skeleton;
 import java.util.Optional;
+import java.util.List;
 
 public class LithicanEntity extends Zombie implements RangedAttackMob {
 
@@ -91,6 +94,8 @@ public class LithicanEntity extends Zombie implements RangedAttackMob {
 
     private static final EntityDataAccessor<Boolean> BABY = SynchedEntityData.defineId(LithicanEntity.class,
             EntityDataSerializers.BOOLEAN);
+
+    private boolean isBroken = false;
 
     // private boolean isBaby = false;
 
@@ -538,7 +543,7 @@ public class LithicanEntity extends Zombie implements RangedAttackMob {
         if (getVariant() == Variant.DEEPSLATE || getVariant() == Variant.STONE) {
             if (this.random.nextFloat() < 0.05) {
                 if (this.random.nextFloat() < 0.05) {
-                    this.addEffect(new MobEffectInstance(MobEffects.INFESTED));
+                    this.addEffect(new MobEffectInstance(MobEffects.INFESTED, -1));
                 }
             }
         }
@@ -548,17 +553,21 @@ public class LithicanEntity extends Zombie implements RangedAttackMob {
 
     @Override
     public boolean isAffectedByPotions() {
+        return true;
+    }
+    private static final List<Holder<MobEffect>> ALLOWED_EFFECTS = List.of(MobEffects.WITHER, MobEffects.INFESTED);
+
+    @Override
+    public boolean addEffect(MobEffectInstance pEffectInstance, @Nullable Entity pEntity) {
+        if (ALLOWED_EFFECTS.contains(pEffectInstance.getEffect())) {
+            return super.addEffect(pEffectInstance, pEntity);
+        }
         return false;
     }
 
     @Override
-    public boolean addEffect(MobEffectInstance pEffectInstance, @Nullable Entity pEntity) {
-        return super.addEffect(pEffectInstance, pEntity);
-    }
-
-    @Override
     protected void tickEffects() {
-        this.getActiveEffects().clear();
+        this.getActiveEffects().removeIf(effect -> !ALLOWED_EFFECTS.contains(effect.getEffect()));
         super.tickEffects();
     }
 
@@ -796,19 +805,34 @@ public class LithicanEntity extends Zombie implements RangedAttackMob {
     public void die(DamageSource damageSource) {
         this.playBreakAnimation();
         if (random.nextFloat() < 0.1) {
+            if (level() instanceof ServerLevel)
+            dropAllDeathLoot((ServerLevel) level(), damageSource);
             this.discard();
+            isBroken = true;
         }
         if (this.getVariant() == Variant.GLASS) {
             this.discard();
+            isBroken = true;
+        }
+        if (this.hasEffect(MobEffects.INFESTED)) {
+            int count = this.level().getDifficulty() == Difficulty.HARD ? this.random.nextInt(5) + 1 : this.random.nextInt(3) + 1;
+            for (int i = 0; i < count; i++) {
+            Silverfish silverfish = EntityType.SILVERFISH.create(this.level(), EntitySpawnReason.TRIGGERED);
+            if (silverfish != null) {
+                silverfish.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+                this.level().addFreshEntity(silverfish);
+            }
+            }
         }
         super.die(damageSource);
-    }
+        }
 
-    @Override
-    public void remove(RemovalReason pReason) {
-        this.playBreakAnimation();
+        @Override
+        public void remove(RemovalReason pReason) {
+        if (!isBroken)
+            this.playBreakAnimation();
         super.remove(pReason);
-    }
+        }
 
     private static final SimpleWeightedRandomList<ItemStack> STONE_VARIANT_DROPS = SimpleWeightedRandomList
             .<ItemStack>builder()
@@ -834,6 +858,8 @@ public class LithicanEntity extends Zombie implements RangedAttackMob {
             case DIAMOND -> new ItemStack(Items.DIAMOND);
             case EMERALD -> new ItemStack(Items.EMERALD);
             case GLASS -> new ItemStack(ItemStack.EMPTY.getItem());
+            case RED -> new ItemStack(Items.RED_SAND);
+            case GILDED -> new ItemStack(Items.GILDED_BLACKSTONE);
             default -> STONE_VARIANT_DROPS.getRandomValue(this.random).orElse(ItemStack.EMPTY);
         };
         if (!drop.isEmpty() && this.level() instanceof ServerLevel serverLevel) {
@@ -886,6 +912,7 @@ public class LithicanEntity extends Zombie implements RangedAttackMob {
             case EMERALD -> Blocks.EMERALD_ORE.defaultBlockState();
             case GLASS -> Blocks.GLASS.defaultBlockState();
             case RED -> Blocks.RED_SAND.defaultBlockState();
+            case GILDED -> Blocks.GILDED_BLACKSTONE.defaultBlockState();
             default -> Blocks.STONE.defaultBlockState();
         };
         }
@@ -902,7 +929,8 @@ public class LithicanEntity extends Zombie implements RangedAttackMob {
         DIAMOND(8),
         EMERALD(9),
         GLASS(10),
-        RED(11);
+        RED(11),
+        GILDED(12);
 
         private final int id;
 
@@ -927,6 +955,7 @@ public class LithicanEntity extends Zombie implements RangedAttackMob {
                 case 9 -> EMERALD;
                 case 10 -> GLASS;
                 case 11 -> RED;
+                case 12 -> GILDED;
                 default -> STONE;
             };
         }

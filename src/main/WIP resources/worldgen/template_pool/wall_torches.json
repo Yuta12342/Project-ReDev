@@ -1,0 +1,26 @@
+{
+  "fallback": "minecraft:empty",
+  "elements":
+  [
+    {
+      "weight": 5,
+      "element":
+      {
+        "location": "redev:wall_torch",
+        "processors": "minecraft:empty",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 10,
+      "element":
+      {
+        "location": "redev:no_wall_torch",
+        "processors": "minecraft:empty",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

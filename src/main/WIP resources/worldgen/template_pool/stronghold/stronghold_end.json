@@ -1,0 +1,46 @@
+{
+  "fallback": "redev:stronghold/stronghold_end_fallback",
+  "elements":
+  [
+    {
+      "weight": 30,
+      "element":
+      {
+        "location": "redev:stronghold/stronghold_hallway_end_0",
+        "processors": "minecraft:empty",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 5,
+      "element":
+      {
+        "location": "redev:stronghold/stronghold_hallway_end_1",
+        "processors": "minecraft:empty",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 5,
+      "element":
+      {
+        "location": "redev:stronghold/stronghold_hallway_end_2",
+        "processors": "minecraft:empty",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 5,
+      "element":
+      {
+        "location": "redev:stronghold/stronghold_hallway_end_3",
+        "processors": "minecraft:empty",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

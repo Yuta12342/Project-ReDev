@@ -1,0 +1,26 @@
+{
+  "fallback": "redev:stronghold/stronghold_end_fallback",
+  "elements":
+  [
+    {
+      "weight": 10,
+      "element":
+      {
+        "location": "redev:stronghold/stronghold_chest",
+        "processors": "minecraft:empty",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 5,
+      "element":
+      {
+        "location": "redev:stronghold/stronghold_no_chest",
+        "processors": "minecraft:empty",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

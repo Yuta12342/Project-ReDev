@@ -36,6 +36,7 @@ public class LithicanRenderer<T extends LithicanEntity, S extends LithicanRender
     public static final ResourceLocation TEXTURE_EMERALD = ResourceLocation.fromNamespaceAndPath(ReDev.MOD_ID, "textures/entity/lithican/emerald.png");
     public static final ResourceLocation TEXTURE_GLASS = ResourceLocation.fromNamespaceAndPath(ReDev.MOD_ID, "textures/entity/lithican/glass_lithican.png");
     public static final ResourceLocation TEXTURE_RED = ResourceLocation.fromNamespaceAndPath(ReDev.MOD_ID, "textures/entity/lithican/petrified_red.png");
+    public static final ResourceLocation TEXTURE_GILDED = ResourceLocation.fromNamespaceAndPath(ReDev.MOD_ID, "textures/entity/lithican/gilded_blackstone.png");
 
     public LithicanRenderer(EntityRendererProvider.Context pContext)
     {
@@ -92,6 +93,7 @@ public class LithicanRenderer<T extends LithicanEntity, S extends LithicanRender
             case EMERALD   -> TEXTURE_EMERALD;
             case GLASS     -> TEXTURE_GLASS;
             case RED       -> TEXTURE_RED;
+            case GILDED    -> TEXTURE_GILDED;
         };
     }
 }
