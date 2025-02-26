@@ -14,7 +14,11 @@ public class RootedEffect extends MobEffect {
             @Override
             public boolean applyEffectTick(ServerLevel s, LivingEntity entity, int amplifier) {
                 if (entity instanceof Player player) {
-                    player.setSprinting(false);
+                    if (player.isSprinting()) {
+                        player.setSprinting(false);
+                        // player.setSpeed(amplifier == 0 ? 0.1F : 0.1F - (0.02F * amplifier));
+                        player.setShiftKeyDown(true);
+                    }
                     double maxSpeed = 0.1D - (0.02D * amplifier); // Cap speed based on amplifier
                     if (player.getDeltaMovement().lengthSqr() > maxSpeed * maxSpeed) {
                         player.setDeltaMovement(player.getDeltaMovement().normalize().scale(maxSpeed));
